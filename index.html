@@ -31,36 +31,30 @@
         }
 
         .main-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; }
-
         .section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 20px; box-sizing: border-box; text-align: center; }
 
         /* --- 1. ENVELOPE --- */
-        .envelope-wrapper { position: relative; width: 300px; height: 240px; margin: 40px auto; perspective: 1000px; }
+        .envelope-wrapper { position: relative; width: 280px; height: 220px; margin: 40px auto; perspective: 1000px; }
         .envelope { width: 100%; height: 100%; background: var(--envelope-red); position: absolute; bottom: 0; left: 0; cursor: pointer; border-radius: 0 0 8px 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.8); z-index: 20; }
-        .envelope::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; border-left: 150px solid transparent; border-right: 150px solid transparent; border-top: 140px solid var(--envelope-flap); transform-origin: top; transition: transform 0.6s ease; z-index: 25; }
+        .envelope::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; border-left: 140px solid transparent; border-right: 140px solid transparent; border-top: 130px solid var(--envelope-flap); transform-origin: top; transition: transform 0.6s ease; z-index: 25; }
         .envelope.open::before { transform: rotateX(180deg); z-index: 5; }
-        .eidi-card { position: absolute; top: 10px; left: 20px; width: 260px; background: white; padding: 10px; z-index: 10; transition: transform 0.8s ease; border-radius: 4px; opacity: 0; }
+        .eidi-card { position: absolute; top: 10px; left: 10px; width: 260px; background: white; padding: 10px; z-index: 10; transition: transform 0.8s ease; border-radius: 4px; opacity: 0; box-sizing: border-box;}
         .eidi-card img { width: 100%; border-radius: 2px; }
-        .envelope.open + .eidi-card { transform: translateY(-200px) rotate(-3deg); opacity: 1; z-index: 30; }
+        .envelope.open + .eidi-card { transform: translateY(-180px) rotate(-3deg); opacity: 1; z-index: 30; }
 
-        /* --- 2. TEXT AREAS --- */
-        .chand-raat-msg { color: var(--gold); font-size: 1.8rem; max-width: 600px; margin: 40px 0; line-height: 1.4; font-style: italic; text-shadow: 0 0 10px rgba(212,175,55,0.3); }
-        
-        .upload-container { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.3); width: 90%; max-width: 450px; backdrop-filter: blur(5px); }
+        /* --- 2. UPLOAD SECTION --- */
+        .upload-container { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.3); width: 90%; max-width: 400px; backdrop-filter: blur(10px); }
         .file-label { display: block; border: 2px dashed var(--gold); padding: 20px; cursor: pointer; border-radius: 10px; margin-bottom: 15px; color: var(--gold); font-weight: bold; }
         #preview-img { width: 100%; border-radius: 10px; display: none; margin-bottom: 15px; border: 2px solid var(--gold); }
-        
         .letter-area { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; color: white; margin-bottom: 20px; font-family: serif; font-size: 1rem; }
+        .send-btn { background: var(--gold); color: black; border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 15px var(--gold); }
 
-        .send-btn { background: var(--gold); color: black; border: none; padding: 15px 50px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 20px rgba(212,175,55,0.4); }
-
-        /* --- 3. TIMER & FINAL --- */
-        #timer-screen { display: none; flex-direction: column; align-items: center; }
-        .countdown-circle { font-size: 6rem; color: var(--gold); margin: 20px 0; font-weight: bold; animation: pulse 1s infinite; }
+        /* --- 3. CHAND RAAT & TIMER --- */
+        #timer-screen { display: none; }
+        .countdown { font-size: 5rem; color: var(--gold); font-weight: bold; margin: 20px; text-shadow: 0 0 20px rgba(212,175,55,0.5); }
         
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        #final-screen { display: none; text-align: center; }
+        /* --- 4. FINAL EID SCREEN --- */
+        #final-screen { display: none; }
         .heart-pulse { display: inline-block; animation: heartBeat 1.2s infinite; color: #ff4d4d; }
         @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
     </style>
@@ -71,34 +65,24 @@
 
     <div class="main-content">
         <div class="hero" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <h1 style="font-size: 3.5rem; color: var(--gold); margin: 0;">Hey, Beautiful</h1>
-            <p style="letter-spacing: 5px; opacity: 0.7; margin-top: 20px;">SCROLL FOR YOUR SURPRISE</p>
-            <div style="margin-top: 50px; font-size: 20px; animation: bounce 2s infinite;">↓</div>
+            <h1 style="font-size: 3rem; color: var(--gold);">Hey, Beautiful</h1>
+            <p style="letter-spacing: 5px; opacity: 0.7;">SCROLL FOR YOUR SURPRISE</p>
         </div>
 
         <div class="section">
-            <h2 style="color: var(--gold); margin-bottom: 50px;">A Special Eidi For You</h2>
+            <h2 style="color: var(--gold); margin-bottom: 30px;">A Special Eidi For You</h2>
             <div class="envelope-wrapper">
                 <div class="envelope" onclick="this.classList.toggle('open')"></div>
                 <div class="eidi-card">
-                    <img src="Mine.png" alt="My Photo">
-                    <p style="color: #a31a1a; margin: 8px 0; font-weight: bold; font-family: sans-serif;">I LOVE YOU <span class="heart-pulse">❤️</span></p>
+                    <img src="Mine.png" alt="Eidi">
+                    <p style="color: #a31a1a; margin: 5px 0; font-weight: bold; font-family: sans-serif;">I LOVE YOU <span class="heart-pulse">❤️</span></p>
                 </div>
             </div>
-            <p style="margin-top: 150px; opacity: 0.6;">(Tap the envelope to open it)</p>
-        </div>
-
-        <div class="section">
-            <div class="chand-raat-msg">
-                "The stars are bright tonight, but they don't shine as much as you. Wishing you a beautiful Chand Raat, my moon."
-            </div>
-            <p style="color: var(--gold); font-size: 2.5rem; margin-top: 20px;">🌙✨</p>
+            <p style="margin-top: 140px; opacity: 0.5;">(Tap the envelope to open)</p>
         </div>
 
         <div class="section" id="interaction-section">
             <h2 style="color: var(--gold); font-size: 2rem;">Sighting My Moon</h2>
-            <p style="margin-bottom: 30px; opacity: 0.8;">My Eid only begins when I see your face.</p>
-
             <div class="upload-container">
                 <form id="eid-form">
                     <img id="preview-img" src="">
@@ -106,44 +90,46 @@
                         <span>Tap to upload your photo ✨</span>
                         <input type="file" name="upload" id="file-input" accept="image/*" style="display: none;" onchange="previewFile()">
                     </label>
-                    
                     <textarea id="user-msg" name="message" class="letter-area" rows="4" placeholder="Write a message for me..."></textarea>
                     
-                    <button type="button" class="send-btn" onclick="startTimer()">SEND TO ME ✨</button>
+                    <button type="button" class="send-btn" onclick="processData()">SIGHT THE MOON ✨</button>
                 </form>
             </div>
+            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">(Your message will be sent to me before the timer begins)</p>
         </div>
 
         <div class="section" id="timer-screen">
-            <h2 style="color: var(--gold); font-size: 2rem;">Sighting the Moon...</h2>
-            <div class="countdown-circle" id="countdown">5</div>
-            <p style="letter-spacing: 2px; opacity: 0.8;">Hold on, my love...</p>
+            <h1 style="color: var(--gold); font-size: 3.5rem; margin-bottom: 10px;">Chand Raat Mubarak!</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9;">"Thank you for being my moon."</p>
+            
+            <div style="margin-top: 40px;">
+                <p style="letter-spacing: 2px; color: var(--gold);">PREPARING YOUR EID SURPRISE...</p>
+                <div class="countdown" id="countdown">10</div>
+            </div>
         </div>
 
         <div class="section" id="final-screen">
-            <h1 style="font-size: 4.5rem; color: var(--gold); margin: 0; text-shadow: 0 0 30px rgba(212,175,55,0.6);">Eid Mubarak!</h1>
-            <p style="font-size: 1.6rem; margin-top: 20px;">The moon is sighted, and my world is complete.</p>
+            <h1 style="font-size: 4rem; color: var(--gold); margin: 0; text-shadow: 0 0 30px rgba(212,175,55,0.7);">Eid Mubarak!</h1>
+            <p style="font-size: 1.5rem; margin-top: 20px;">My world is now complete.</p>
             <p style="font-size: 70px; margin-top: 30px;">🌙💖✨</p>
         </div>
     </div>
 
     <script>
-        // Star Field background
+        // Star Field Background
         const starContainer = document.getElementById('starfield');
-        for (let i = 0; i < 180; i++) {
+        for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
             star.style.position = 'absolute';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            star.style.width = Math.random() * 2.5 + 'px';
+            star.style.width = Math.random() * 2 + 'px';
             star.style.height = star.style.width;
             star.style.backgroundColor = 'white';
             star.style.borderRadius = '50%';
-            star.style.opacity = Math.random();
             starContainer.appendChild(star);
         }
 
-        // Preview the photo before sending
         function previewFile() {
             const preview = document.getElementById('preview-img');
             const file = document.getElementById('file-input').files[0];
@@ -156,19 +142,17 @@
             if (file) reader.readAsDataURL(file);
         }
 
-        function startTimer() {
+        function processData() {
             const fileInput = document.getElementById('file-input');
+            const userMsg = document.getElementById('user-msg').value;
+
             if (!fileInput.files[0]) {
                 alert("Please upload your photo first! 🌙");
                 return;
             }
 
-            // 1. Move to Timer Screen
-            document.getElementById('interaction-section').style.display = 'none';
-            document.getElementById('timer-screen').style.display = 'flex';
-            document.getElementById('timer-screen').scrollIntoView({ behavior: 'smooth' });
-
-            // 2. Submit to Formspree (Background)
+            // --- STEP 1: SEND DATA IMMEDIATELY ---
+            // Send to Formspree (Email)
             const formData = new FormData(document.getElementById('eid-form'));
             fetch("https://formspree.io/f/xqeywpbv", { 
                 method: "POST", 
@@ -176,41 +160,35 @@
                 headers: { 'Accept': 'application/json' } 
             });
 
-            // 3. Start the 5-second countdown
-            let timeLeft = 5;
-            const timerDisplay = document.getElementById('countdown');
+            // Prepare WhatsApp data
+            const phone = "923362842234";
+            const waText = encodeURIComponent(`🌙 *Moon Sighted!* 🌙\n\n"${userMsg}"\n\n(I've uploaded my photo to the site!)`);
             
+            // --- STEP 2: OPEN WHATSAPP FIRST ---
+            // This ensures the message is "sent" before she watches the timer
+            window.open(`https://wa.me/${phone}?text=${waText}`, '_blank');
+
+            // --- STEP 3: START TIMER ---
+            document.getElementById('interaction-section').style.display = 'none';
+            document.getElementById('timer-screen').style.display = 'flex';
+            document.getElementById('timer-screen').scrollIntoView({ behavior: 'smooth' });
+
+            let timeLeft = 10;
             const timer = setInterval(() => {
                 timeLeft--;
-                timerDisplay.innerText = timeLeft;
-
+                document.getElementById('countdown').innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    showFinalEid();
+                    showFinal();
                 }
             }, 1000);
         }
 
-        function showFinalEid() {
-            // Hide Timer, Show Result
+        function showFinal() {
             document.getElementById('timer-screen').style.display = 'none';
             document.getElementById('final-screen').style.display = 'flex';
             document.getElementById('final-screen').scrollIntoView({ behavior: 'smooth' });
-
-            // Prepare WhatsApp data
-            const userMsg = document.getElementById('user-msg').value;
-            const phone = "923362842234";
-            const waText = encodeURIComponent(`🌙 *Eid Moon Sighted!* 🌙\n\n"${userMsg}"\n\n(Check your email for my photo!)`);
-            
-            // Redirect to WhatsApp after 1.5 seconds
-            setTimeout(() => {
-                window.location.href = `https://wa.me/${phone}?text=${waText}`;
-            }, 1500);
         }
     </script>
-
-    <style>
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
-    </style>
 </body>
 </html>
