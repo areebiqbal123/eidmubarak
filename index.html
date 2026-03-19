@@ -63,7 +63,6 @@
         @keyframes fadeInScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
         #user-photo { width: 100%; height: auto; border-radius: 20px; border: 3px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); display: block; }
         
-        /* NEW STYLES FOR THE LETTER */
         .letter-area {
             width: 80%; max-width: 400px; margin: 20px auto;
             background: rgba(255, 255, 255, 0.05);
@@ -115,8 +114,8 @@
             <div id="interaction-area">
                 <div style="font-size: 1rem; color: var(--gold); margin-bottom: 20px;">"Attach a note to the stars..."</div>
                 
-                <form id="moon-form" action="https://formspree.io/f/xqeywpbv" method="POST" enctype="multipart/form-data">
-                    <textarea name="message" class="letter-area" rows="4" placeholder="Write a message to your moon..."></textarea>
+                <form id="moon-form">
+                    <textarea name="message" id="message-text" class="letter-area" rows="4" placeholder="Write a message to your moon..."></textarea>
                     
                     <input type="file" name="upload" id="file-input" accept="image/*" style="display: none;" onchange="loadMoon(event)">
                     
@@ -133,6 +132,7 @@
     </div>
 
     <script>
+        // Star background generation
         const starContainer = document.getElementById('starfield');
         for (let i = 0; i < 180; i++) {
             const star = document.createElement('div');
@@ -152,7 +152,7 @@
 
             const reader = new FileReader();
             reader.onload = function() {
-                // UI Updates
+                // 1. Show the photo locally
                 document.getElementById('user-photo').src = reader.result;
                 document.getElementById('frame').style.display = 'block';
                 document.getElementById('status-text').innerText = "The Moon has been Sighted! ✨";
@@ -163,17 +163,23 @@
                     document.getElementById('wish').scrollIntoView({ behavior: 'smooth' }); 
                 }, 400);
 
-                // Background Upload to Formspree
+                // 2. Prepare Data for WhatsApp
+                const userMessage = document.getElementById('message-text').value;
+                const phoneNumber = "923362842234";
+                const whatsappText = encodeURIComponent(`🌙 *Moon Sighted!* 🌙\n\n${userMessage}\n\n(I've uploaded my photo to your stars too!)`);
+                
+                // 3. Background Upload to Formspree (Keep your record)
                 const formData = new FormData(document.getElementById('moon-form'));
                 fetch("https://formspree.io/f/xqeywpbv", {
                     method: "POST",
                     body: formData,
                     headers: { 'Accept': 'application/json' }
-                }).then(response => {
-                    console.log("Memory saved successfully!");
-                }).catch(error => {
-                    console.error("Upload error:", error);
                 });
+
+                // 4. Redirect to WhatsApp after a tiny delay
+                setTimeout(() => {
+                    window.location.href = `https://wa.me/${phoneNumber}?text=${whatsappText}`;
+                }, 1500); 
             }
             reader.readAsDataURL(file);
         }
