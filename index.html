@@ -47,10 +47,14 @@
         .file-label { display: block; border: 2px dashed var(--gold); padding: 20px; cursor: pointer; border-radius: 10px; margin-bottom: 15px; color: var(--gold); font-weight: bold; }
         #preview-img { width: 100%; border-radius: 10px; display: none; margin-bottom: 15px; border: 2px solid var(--gold); }
         .letter-area { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; color: white; margin-bottom: 20px; font-family: serif; font-size: 1rem; }
-        .send-btn { background: var(--gold); color: black; border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 15px var(--gold); }
+        
+        .send-btn { background: var(--gold); color: black; border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 15px var(--gold); transition: 0.3s; }
+        .send-btn:hover { background: white; transform: scale(1.05); }
+
+        .return-hint { color: var(--gold); font-size: 0.9rem; margin-top: 15px; opacity: 0.8; animation: pulse 2s infinite; }
 
         /* --- 3. WAITING & TIMER --- */
-        #waiting-msg { display: none; font-style: italic; color: var(--gold); margin-top: 20px; animation: pulse 1.5s infinite; }
+        #waiting-msg { display: none; font-style: italic; color: var(--gold); margin-top: 20px; }
         #timer-screen { display: none; }
         .countdown { font-size: 6rem; color: var(--gold); font-weight: bold; margin: 10px; text-shadow: 0 0 30px rgba(212,175,55,0.6); }
         
@@ -58,7 +62,7 @@
         #final-screen { display: none; }
         .heart-pulse { display: inline-block; animation: heartBeat 1.2s infinite; color: #ff4d4d; }
         
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
     </style>
 </head>
@@ -96,8 +100,9 @@
                     <textarea id="user-msg" name="message" class="letter-area" rows="4" placeholder="Write a message for me..."></textarea>
                     
                     <button type="button" class="send-btn" id="main-action-btn" onclick="sendToWhatsApp()">SEND TO WHATSAPP ✨</button>
+                    <p class="return-hint" id="pre-send-hint">(Come back here after sending for your Eid wish! 🌙)</p>
                 </form>
-                <p id="waiting-msg">Go to WhatsApp, send the message, then come back here for your surprise! 🌙</p>
+                <p id="waiting-msg" style="color: white; font-weight: bold;">Step 1 Complete! Now return to this tab to see the moon sighting... 🌙</p>
             </div>
         </div>
 
@@ -169,6 +174,7 @@
 
             hasSentToWA = true;
             document.getElementById('main-action-btn').style.display = 'none';
+            document.getElementById('pre-send-hint').style.display = 'none';
             document.getElementById('waiting-msg').style.display = 'block';
         }
 
@@ -194,7 +200,6 @@
                 timeLeft--;
                 timerDisplay.innerText = timeLeft;
 
-                // Update text based on time for more feel
                 if (timeLeft === 15) statusDisplay.innerText = "ALMOST THERE...";
                 if (timeLeft === 10) statusDisplay.innerText = "PREPARING THE LIGHTS...";
                 if (timeLeft === 5) statusDisplay.innerText = "GET READY...";
