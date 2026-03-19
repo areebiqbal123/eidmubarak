@@ -110,7 +110,7 @@
                     <img id="preview-img" src="">
                     
                     <label for="file-input" class="file-label" id="drop-zone">
-                        <span>Tap to upload your photo 📸</span>
+                        <span>Tap to choose your photo 📸</span>
                         <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="previewFile()">
                     </label>
 
@@ -118,7 +118,7 @@
                     
                     <button type="button" class="send-btn" id="main-action-btn" onclick="triggerSend()">SEND TO ME ✨</button>
                 </form>
-                <p id="waiting-msg" style="display:none; font-weight:bold; margin-top:20px; color: var(--gold);">Message sent! Scroll down to see the moon status... 🌙</p>
+                <p id="waiting-msg" style="display:none; font-weight:bold; margin-top:20px; color: var(--gold);">Instructions sent! Scroll down to see the moon status... 🌙</p>
             </div>
         </div>
 
@@ -141,7 +141,13 @@
     <template id="final-template">
         <div id="final-screen" class="section" style="display: flex;">
             <h1 style="font-size: 4.5rem; color: var(--gold); margin-bottom: 10px;">Eid Mubarak!</h1>
-            <p style="font-size: 1.5rem;">The moon is sighted, and my world is complete. 🌙💖</p>
+            <div style="max-width: 600px; font-size: 1.2rem; line-height: 1.8;">
+                <p>Eid Mubarak, my love ❤️🌙</p>
+                <p>On this beautiful day, I just want you to know how deeply grateful I am to have you in my life. You’re not just someone I love… you’re my peace, my happiness, and the reason behind so many of my smiles 😊✨</p>
+                <p>Even though we’re not together right now, my heart feels close to you in every moment. I pray that this Eid brings endless happiness to your life, fills your heart with peace, and keeps you safe always 🤲💫</p>
+                <p>I miss you a extra today… but I also love you a lot more than words can ever express 💖</p>
+                <p>Eid Mubarak once again, meri jaan… you mean everything to me 🌹💕</p>
+            </div>
         </div>
     </template>
 
@@ -149,7 +155,6 @@
         const MY_PHONE = "923362842234";
         let countdownInterval;
 
-        // Calculate Target Time (Tomorrow at 8:00 AM)
         function getTargetTime() {
             const now = new Date();
             const target = new Date();
@@ -162,7 +167,6 @@
 
         window.onload = function() {
             window.scrollTo(0, 0);
-            // Check if she already sent the message before
             if (localStorage.getItem('eidStatus') === 'sent') {
                 showWaitingUI();
             }
@@ -186,20 +190,22 @@
             const msg = document.getElementById('user-msg').value.trim();
 
             if (!file) {
-                alert("Please upload your photo first! 📸"); return;
+                alert("Please select your photo first! 📸"); return;
             }
             if (msg === "") {
                 alert("Don't forget to write your message! ✍️"); return;
             }
             
-            // Mark as sent in local storage
+            // Explain the manual step to her
+            alert("✨ Almost there! ✨\n\nI'm opening WhatsApp for you. Please ATTACH the photo you just picked so I can finally see my moon! 🌙❤️");
+
             localStorage.setItem('eidStatus', 'sent');
             
-            // Open WhatsApp with the text message
-            const waUrl = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent("🌙 Moon Sighted!\n\n" + msg + "\n\n(Photo uploaded on the web!)")}`;
-            window.open(waUrl, '_blank');
+            // Pre-filled text with a reminder to attach the photo
+            const waText = `🌙 Moon Sighted!\n\n${msg}\n\n(I'm attaching my photo now... 📸)`;
+            const waUrl = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(waText)}`;
             
-            // Transition UI
+            window.open(waUrl, '_blank');
             showWaitingUI();
         }
 
@@ -210,7 +216,6 @@
             
             startTimer();
             
-            // Scroll to the timer section automatically
             setTimeout(() => {
                 document.getElementById('timer-section').scrollIntoView({ behavior: 'smooth' });
             }, 500);
@@ -252,7 +257,6 @@
             }
         }
 
-        // Star generation
         const starContainer = document.getElementById('starfield');
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
