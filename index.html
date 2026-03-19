@@ -50,13 +50,15 @@
         .send-btn { background: var(--gold); color: black; border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 15px var(--gold); }
 
         /* --- 3. WAITING & TIMER --- */
-        #waiting-msg { display: none; font-style: italic; color: var(--gold); margin-top: 20px; }
+        #waiting-msg { display: none; font-style: italic; color: var(--gold); margin-top: 20px; animation: pulse 1.5s infinite; }
         #timer-screen { display: none; }
-        .countdown { font-size: 5rem; color: var(--gold); font-weight: bold; margin: 20px; text-shadow: 0 0 20px rgba(212,175,55,0.5); }
+        .countdown { font-size: 6rem; color: var(--gold); font-weight: bold; margin: 10px; text-shadow: 0 0 30px rgba(212,175,55,0.6); }
         
         /* --- 4. FINAL SCREEN --- */
         #final-screen { display: none; }
         .heart-pulse { display: inline-block; animation: heartBeat 1.2s infinite; color: #ff4d4d; }
+        
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
         @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
     </style>
 </head>
@@ -95,7 +97,7 @@
                     
                     <button type="button" class="send-btn" id="main-action-btn" onclick="sendToWhatsApp()">SEND TO WHATSAPP ✨</button>
                 </form>
-                <p id="waiting-msg">Go to WhatsApp, send the message, then come back here! 🌙</p>
+                <p id="waiting-msg">Go to WhatsApp, send the message, then come back here for your surprise! 🌙</p>
             </div>
         </div>
 
@@ -104,22 +106,22 @@
             <p style="font-size: 1.2rem; opacity: 0.9;">"The stars are bright, but you are the brightest."</p>
             
             <div style="margin-top: 40px;">
-                <p style="letter-spacing: 2px; color: var(--gold);">PREPARING YOUR EID SURPRISE IN...</p>
-                <div class="countdown" id="countdown">10</div>
+                <p style="letter-spacing: 2px; color: var(--gold); font-weight: bold;" id="timer-status">SIGHTING THE MOON...</p>
+                <div class="countdown" id="countdown">20</div>
             </div>
         </div>
 
         <div class="section" id="final-screen">
-            <h1 style="font-size: 4rem; color: var(--gold); margin: 0; text-shadow: 0 0 30px rgba(212,175,55,0.7);">Eid Mubarak!</h1>
-            <p style="font-size: 1.5rem; margin-top: 20px;">My world is now complete.</p>
-            <p style="font-size: 70px; margin-top: 30px;">🌙💖✨</p>
+            <h1 style="font-size: 4.5rem; color: var(--gold); margin: 0; text-shadow: 0 0 30px rgba(212,175,55,0.7);">Eid Mubarak!</h1>
+            <p style="font-size: 1.5rem; margin-top: 20px;">The moon is sighted, and my world is complete.</p>
+            <p style="font-size: 80px; margin-top: 30px;">🌙💖✨</p>
         </div>
     </div>
 
     <script>
         let hasSentToWA = false;
 
-        // Star Field Background
+        // Generate stars
         const starContainer = document.getElementById('starfield');
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
@@ -154,7 +156,6 @@
                 return;
             }
 
-            // 1. Send photo/msg to Formspree in background
             const formData = new FormData(document.getElementById('eid-form'));
             fetch("https://formspree.io/f/xqeywpbv", { 
                 method: "POST", 
@@ -162,37 +163,42 @@
                 headers: { 'Accept': 'application/json' } 
             });
 
-            // 2. Open WhatsApp
             const phone = "923362842234";
             const waText = encodeURIComponent(`🌙 *Moon Sighted!* 🌙\n\n"${userMsg}"\n\n(I've uploaded my photo to the site!)`);
             window.open(`https://wa.me/${phone}?text=${waText}`, '_blank');
 
-            // 3. Update UI to wait for return
             hasSentToWA = true;
             document.getElementById('main-action-btn').style.display = 'none';
             document.getElementById('waiting-msg').style.display = 'block';
         }
 
-        // --- THE MAGIC PART: DETECT RETURN ---
+        // Detect return from WhatsApp
         document.addEventListener("visibilitychange", function() {
             if (document.visibilityState === 'visible' && hasSentToWA) {
-                // She has come back from WhatsApp!
                 startTimer();
             }
         });
 
         function startTimer() {
-            // Prevent timer from starting twice
             hasSentToWA = false; 
 
             document.getElementById('interaction-section').style.display = 'none';
             document.getElementById('timer-screen').style.display = 'flex';
             document.getElementById('timer-screen').scrollIntoView({ behavior: 'smooth' });
 
-            let timeLeft = 10;
+            let timeLeft = 20;
+            const timerDisplay = document.getElementById('countdown');
+            const statusDisplay = document.getElementById('timer-status');
+            
             const timer = setInterval(() => {
                 timeLeft--;
-                document.getElementById('countdown').innerText = timeLeft;
+                timerDisplay.innerText = timeLeft;
+
+                // Update text based on time for more feel
+                if (timeLeft === 15) statusDisplay.innerText = "ALMOST THERE...";
+                if (timeLeft === 10) statusDisplay.innerText = "PREPARING THE LIGHTS...";
+                if (timeLeft === 5) statusDisplay.innerText = "GET READY...";
+
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     showFinal();
